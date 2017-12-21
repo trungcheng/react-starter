@@ -10,8 +10,9 @@ class App extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			homeLink: "Home"
-		}
+			homeLink: "Home",
+			homeMounted: true
+		};
 	}
 
 	onGreet() {
@@ -24,25 +25,41 @@ class App extends React.Component {
 		});
 	}
 
+	onChangeHomeMounted() {
+		this.setState({
+			homeMounted: !this.state.homeMounted
+		});
+	}
+
 	render() {
+		let homeCmp = "";
 		let user = {
 			name: "Test",
 			hobbies: ["Sports", "Reading"]
+		}
+		if (this.state.homeMounted) {
+			homeCmp = (
+				<Home 
+					name={"Trung"} 
+					initialAge={24} 
+					user={user} 
+					greet={this.onGreet}
+					changeLink={this.onChangeLinkName.bind(this)}
+					initialLinkName={this.state.homeLink}
+				/>
+			);
 		}
 		return (
 			<div>
 				<Header homeLink={this.state.homeLink} />
 				<div className="col-md-10 col-md-offset-1">
-					<Home 
-						name={"Trung"} 
-						initialAge={24} 
-						user={user} 
-						greet={this.onGreet}
-						changeLink={this.onChangeLinkName.bind(this)}
-						initialLinkName={this.state.homeLink}
-					>
-						<p>This is a paragraph</p>
-					</Home>
+					{homeCmp}
+				</div>
+				<div className="col-md-10 col-md-offset-1">
+					<br />
+					<button onClick={this.onChangeHomeMounted.bind(this)} className="btn btn-warning">
+						(Un)Mount Home Component
+					</button>
 				</div>
 			</div>
 		);
